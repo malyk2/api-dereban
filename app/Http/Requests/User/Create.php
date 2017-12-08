@@ -1,11 +1,10 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\User;
 
-use App\Http\Requests\FormRequest;
-//use Illuminate\Foundation\Http\FormRequest;
+use App\Http\Requests\ApiRequest;
 
-class UserCreate extends FormRequest
+class Create extends ApiRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -28,15 +27,9 @@ class UserCreate extends FormRequest
     public function rules()
     {
         return [
-            'email' => 'required|email',
-            'email2' => 'required|email'
+            'email' => 'required|email|unique:users,email',
+            'password' => 'required|min:6'
         ];
     }
-
-//    public function failedValidation(Validator $validator)
-//    {
-//        dd('usercr');
-//    }
-
     
 }

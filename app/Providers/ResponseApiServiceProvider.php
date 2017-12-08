@@ -19,11 +19,11 @@ class ResponseApiServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        Response::macro('success', function ($data, $message = '') {
+        Response::macro('success', function ($data, $message = '', $status = 200) {
             return Response::json([
               'message'  => $message,
               'data' => $data,
-            ]);
+            ], $status);
         });
 
         Response::macro('error', function ($message = '', $status = 400) {
@@ -31,16 +31,6 @@ class ResponseApiServiceProvider extends ServiceProvider
               'data'  => false,
               'message' => $message,
             ], $status);
-        });
-        
-        Request::macro('apiValidate', function ($vars, $rules = [], $messages = [], $customAttributes = []) {
-            $data = $this->only($vars);
-            $validator = Validator::make($data, $rules, $messages, $customAttributes);
-            if ($validator->fails()) {
-                throw (new \App\Exceptions\ApiValidationException($validator))->withValidator($validator)->withCode(422);
-            } else {
-                return $data;
-            }
         });
     }
 

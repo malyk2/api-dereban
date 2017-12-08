@@ -3,12 +3,15 @@
 namespace App\Exceptions;
 
 use Exception;
+use Illuminate\Contracts\Validation\Validator;
 
 class ApiValidationException extends Exception
 {
     protected $validate = '';
 
-    protected $code = 500;
+    protected $code = 422;
+
+    protected $message = 'Validate error';
 
     public function __construct()
     {
@@ -17,10 +20,14 @@ class ApiValidationException extends Exception
 
     public function render()
     {
-        return response()->json(['validate'=>$this->validate], $this->code);
+        $response = [
+            'message' => $this->message,
+            'validate' => $this->validate
+        ];
+        return response()->json($response, $this->code);
     }
 
-    public function withValidator($validator)
+    public function withValidator(Validator $validator)
     {
         $this->validate = $validator->getMessageBag()->toArray();
         return $this;
@@ -29,6 +36,12 @@ class ApiValidationException extends Exception
     public function withCode($code)
     {
         $this->code = $code;
+        return $this;
+    }
+
+    public function withMessage($message)
+    {
+        $this->message = $message;
         return $this;
     }
 }

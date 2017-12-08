@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\User;
 use Illuminate\Http\Request;
+use App\Http\Requests\User\Create as UserCreateRequest;
 
 class UserController extends Controller
 {
@@ -12,18 +14,13 @@ class UserController extends Controller
         return response()->success(compact('user'), 'test_mesage');
     }
     
-    public function create(\App\Http\Requests\UserCreate $request)
-    //public function create(Request $request)
+    public function create(UserCreateRequest $request)
     {
-        $vars = ['email', 'password'];
-        $rules = [
-            'email' => 'required|email',
-            'password' => 'required|email'
-        ];
-        $data = $request->apiValidate($vars, $rules);
-
-        dd($data);
-        
+        $data = $request->only('email', 'password');
+        $data['name'] = 'name';
+        $user = User::create($data);
+        $token = $user->createToken('Ext Token')->accessToken;
+        return response()->success(compact('token'), 'User created', 201);
     }
 
 }
