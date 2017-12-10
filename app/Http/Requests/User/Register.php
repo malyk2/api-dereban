@@ -4,7 +4,7 @@ namespace App\Http\Requests\User;
 
 use App\Http\Requests\ApiRequest;
 
-class Create extends ApiRequest
+class Register extends ApiRequest
 {
     /**
      * Determine if the user is authorized to make this request.
