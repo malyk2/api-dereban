@@ -20,11 +20,7 @@ class ApiValidationException extends Exception
 
     public function render()
     {
-        $response = [
-            'message' => $this->message,
-            'validate' => $this->validate
-        ];
-        return response()->json($response, $this->code);
+        return response()->error($this->message, $this->code, $this->validate);
     }
 
     public function withValidator(Validator $validator)
