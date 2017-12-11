@@ -1,12 +1,8 @@
 @component('mail::message')
-# Order Shipped
+<h2 style="text-align: center">{{ __("Thanks for registration!") }}</h2>
 
-Your order has been shipped!
+<p>{{ __('Hello'). ', ' . $user->name . ' ' . __('and welcome to Dereban world!') }}</p>
 
-@component('mail::button', ['url' => $url, 'color' => 'green'])
-View Order
-@endcomponent
-
-Thanks,<br>
-{{ config('app.name') }}
+Best regards,<br>
+{{ config('app.name') }} team
 @endcomponent

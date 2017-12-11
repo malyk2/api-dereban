@@ -2,7 +2,7 @@
 
 namespace App\Mail;
 
-use App\User
+use App\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
@@ -30,6 +30,7 @@ class UserCreate extends Mailable
      */
     public function build()
     {
+        //return $this->markdown('emails.users.activate');
         return $this->markdown('emails.users.register');
     }
 }
