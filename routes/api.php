@@ -7,6 +7,7 @@ Route::middleware('apilocale')->group(function (){
         Route::post('/user/register', 'UserController@register');
         Route::post('/user/registerActivate', 'UserController@registerActivate');
         Route::post('/user/login', 'UserController@login');
+        Route::post('/user/activate', 'UserController@activate');
     });
     
     //private routes

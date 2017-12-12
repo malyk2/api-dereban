@@ -10,7 +10,10 @@ class User extends Authenticatable
 {
     use HasApiTokens, Notifiable;
 
-    /**
+    const STATUS_NEW = 0;
+    const STATUS_ACTIVE = 1;
+
+/**
      * The attributes that are mass assignable.
      *
      * @var array
