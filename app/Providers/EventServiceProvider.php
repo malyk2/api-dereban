@@ -22,6 +22,9 @@ class EventServiceProvider extends ServiceProvider
         'App\Events\User\RegisterActivate' => [
             'App\Listeners\User\RegisterActivateListener',
         ],
+        'App\Events\User\Activate' => [
+            'App\Listeners\User\ActivateListener',
+        ],
     ];
 
     /**
