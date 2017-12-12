@@ -93,7 +93,7 @@ return [
 
     'locales' => [
         'en' => 'english',
-        'ua' => 'ukrainian',
+        'uk' => 'ukrainian',
         'ru' => 'russian',
     ],
 

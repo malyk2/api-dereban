@@ -11,5 +11,9 @@ return [
             "required" => "Поле password обов'язкове.",
             "min" => ":Attribute мае бути мінімум :min символів."
         ],
+        "url" => [
+            "required" => "Поле url обов'язкове.",
+            "url" => "Не валідний url.",
+        ]
     ],
 ];
