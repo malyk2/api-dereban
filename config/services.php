@@ -15,8 +15,8 @@ return [
     */
 
     'mailgun' => [
-        'domain' => env('MAILGUN_DOMAIN'),
-        'secret' => env('MAILGUN_SECRET'),
+        'domain' => 'crm.da4.info',
+        'secret' => 'key-eeb8c24900b1deb54a21b831e2a01cbb',
     ],
 
     'ses' => [

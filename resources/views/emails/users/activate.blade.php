@@ -1,10 +1,10 @@
 @component('mail::message')
-<h2 style="text-align: center">{{ __("Account Activation") }}</h2>
+<h2 style="text-align: center">{{ __("Account activation") }}</h2>
 
 <p style="text-align: center">{{ __('To continue your registration please click on the button below') }}</p>
 
-@component('mail::button', ['url' => 'http://url.com', 'color' => 'green'])
-Activate your account
+@component('mail::button', ['url' => $user->activate_link, 'color' => 'green'])
+{{ __('Activate your account') }}
 @endcomponent
 
 Thanks,<br>

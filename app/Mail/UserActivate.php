@@ -8,7 +8,7 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use App\User;
 
-class UserCreate extends Mailable
+class UserActivate extends Mailable
 {
     use Queueable, SerializesModels;
 
@@ -30,6 +30,6 @@ class UserCreate extends Mailable
      */
     public function build()
     {
-        return $this->markdown('emails.users.register');
+        return $this->markdown('emails.users.activate');
     }
 }

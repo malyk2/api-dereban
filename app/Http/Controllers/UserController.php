@@ -13,7 +13,6 @@ use App\Http\Requests\User\RegisterActivate as UserRegisterActivateRequest;
 use App\Http\Requests\User\Login as UserLoginRequest;
 use App\Http\Requests\User\Activate as UserActivateRequest;
 
-
 class UserController extends Controller
 {
     public function register(UserRegisterRequest $request)
@@ -27,7 +26,7 @@ class UserController extends Controller
         $token = $user->createToken('access_token')->accessToken;
 
         event(new UserRegisterEvent($user));
-        
+
         return response()->success(compact('token', 'user'), 'User created', 201);
     }
 
@@ -57,7 +56,7 @@ class UserController extends Controller
             $token = $user->createToken('access_token')->accessToken;
 
             event(new UserLoginEvent($user));
-            
+
             return response()->success(compact('token', 'user'), 'Login success', 200);
 
         } else {
