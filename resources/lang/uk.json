@@ -1,0 +1,12 @@
+{
+    "Validate error": "Помилка валідації",
+    "Lang not found": "Мову не знайдено",
+    "User created": "Користувача створено",
+    "User created. Email to activate account sended.": "Користувача створено. Лист для підтвердження акаунту відправлено.",
+    "Login success": "Авторизація успішна",
+    "Account not activated": "Акаунт не активовано",
+    "Invalid link": "Хибне посилання",
+    "Account hasn't status 'new'": "Акаунт не в статусі 'новий'",
+    "Account activated": "Акаунт активовано",
+    "": ""
+}

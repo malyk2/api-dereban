@@ -91,6 +91,12 @@ return [
     |
     */
 
+    'locales' => [
+        'en' => 'english',
+        'uk' => 'ukrainian',
+        'ru' => 'russian',
+    ],
+
     'fallback_locale' => 'en',
 
     /*
