@@ -40,6 +40,7 @@ class Kernel extends HttpKernel
         'api' => [
             'throttle:60,1',
             'bindings',
+            'apicors'
         ],
     ];
 
@@ -58,5 +59,6 @@ class Kernel extends HttpKernel
         'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'apilocale' => \App\Http\Middleware\ApiLocale::class,
+        'apicors' => \App\Http\Middleware\ApiCors::class,
     ];
 }
