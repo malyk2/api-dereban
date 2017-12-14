@@ -39,8 +39,8 @@ class UserController extends Controller
         $data['status'] = User::STATUS_NEW;
         $user = User::create($data);
 
-        $url = str_finish($data['url'], '/');
-        $activateLink = $url.md5($user->id.$user->created_at);
+        $activateLink = str_replace_first('{hash}', md5($user->id.$user->created_at), $data['url']);
+
         event(new UserRegisterActivateEvent($user, $activateLink));
 
         return response()->success(compact('user'), 'User created. Email to activate account sended.', 201);

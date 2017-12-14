@@ -1,5 +1,6 @@
 <?php
 return [
+    'url_has_hash' => ':attribute не містить секцію {hash} для подальшої заміни.',
     'custom' => [
         "email" => [
             "required" => "Поле email обов'язкове.",

@@ -29,7 +29,7 @@ class RegisterActivate extends ApiRequest
         return [
             'email' => 'required|email|unique:users,email',
             'password' => 'required|min:6',
-            'url' => 'required|url'
+            'url' => 'required|url|urlHasHash'
         ];
     }
     
