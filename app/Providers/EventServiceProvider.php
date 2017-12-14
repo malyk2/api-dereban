@@ -31,6 +31,9 @@ class EventServiceProvider extends ServiceProvider
         'App\Events\User\ChangePassword' => [
             'App\Listeners\User\ChangePasswordListener',
         ],
+        'App\Events\User\СhangeLang' => [
+            'App\Listeners\User\СhangeLangListener',
+        ],
     ];
 
     /**

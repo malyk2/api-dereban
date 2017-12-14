@@ -5,13 +5,11 @@ return [
         "email" => [
             "required" => "Поле email обов'язкове.",
             "email" => "Не валідний email.",
-            "unique" => "Email вже використовується.",
-            "exists" => "Некоректний Email."
+            "unique" => "Email вже використовується."
         ],
         "password" => [
             "required" => "Поле password обов'язкове.",
-            "min" => ":Attribute мае бути мінімум :min символів.",
-            "confirmed" => "Паролі не співпадать."
+            "min" => ":Attribute мае бути мінімум :min символів."
         ],
         "url" => [
             "required" => "Поле url обов'язкове.",
@@ -20,5 +18,10 @@ return [
         "hash" => [
             "required" => "Поле hash обов'язкове.",
         ],
+        "lang" => [
+            "required" => "Поле lang обов'язкове.",
+            "size" => "lang має містити :size символи.",
+            "in" => "Некоректне значення lang."
+        ]
     ],
 ];

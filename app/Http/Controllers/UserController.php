@@ -2,20 +2,25 @@
 
 namespace App\Http\Controllers;
 
-use App\User;
 use Auth;
+
+use App\User;
+
 use App\Events\User\Login as UserLoginEvent;
 use App\Events\User\Register as UserRegisterEvent;
 use App\Events\User\RegisterActivate as UserRegisterActivateEvent;
 use App\Events\User\Activate as UserActivateEvent;
 use App\Events\User\ForgotPassword as UserForgotPasswordEvent;
 use App\Events\User\ChangePassword as UserChangePasswordEvent;
+use App\Events\User\СhangeLang as UserСhangeLangEvent;
+
 use App\Http\Requests\User\Register as UserRegisterRequest;
 use App\Http\Requests\User\RegisterActivate as UserRegisterActivateRequest;
 use App\Http\Requests\User\Login as UserLoginRequest;
 use App\Http\Requests\User\Activate as UserActivateRequest;
 use App\Http\Requests\User\ForgotPassword as UserForgotPasswordRequest;
 use App\Http\Requests\User\ChangePassword as UserChangePasswordRequest;
+use App\Http\Requests\User\ChangeLang as UserChangeLangRequest;
 
 
 class UserController extends Controller
@@ -114,6 +119,19 @@ class UserController extends Controller
         } else {
             return response()->error('Invalid link', 400);
         }
+    }
+
+    public function changeLang(UserChangeLangRequest $request)
+    {
+        $data = $request->only('lang');
+        $user = Auth::user();
+        $user->lang = $data['lang'];
+        app()->setLocale($data['lang']);
+        $user->save();
+
+        event(new UserСhangeLangEvent($user));
+
+        return response()->success([], 'Language changed', 200);
     }
 
 }
