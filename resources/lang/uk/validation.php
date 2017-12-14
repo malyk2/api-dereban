@@ -5,12 +5,13 @@ return [
         "email" => [
             "required" => "Поле email обов'язкове.",
             "email" => "Не валідний email.",
-            "unique" => "Email вже використовується."
-            
+            "unique" => "Email вже використовується.",
+            "exists" => "Некоректний Email."
         ],
         "password" => [
             "required" => "Поле password обов'язкове.",
-            "min" => ":Attribute мае бути мінімум :min символів."
+            "min" => ":Attribute мае бути мінімум :min символів.",
+            "confirmed" => "Паролі не співпадать."
         ],
         "url" => [
             "required" => "Поле url обов'язкове.",

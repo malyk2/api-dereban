@@ -8,6 +8,8 @@ Route::middleware('apilocale')->group(function (){
         Route::post('/user/registerActivate', 'UserController@registerActivate');
         Route::post('/user/login', 'UserController@login');
         Route::post('/user/activate', 'UserController@activate');
+        Route::post('/user/forgotPassword', 'UserController@forgotPassword');
+        Route::post('/user/changePassword', 'UserController@changePassword');
     });
     
     //private routes
