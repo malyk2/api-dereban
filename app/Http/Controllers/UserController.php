@@ -8,10 +8,14 @@ use App\Events\User\Login as UserLoginEvent;
 use App\Events\User\Register as UserRegisterEvent;
 use App\Events\User\RegisterActivate as UserRegisterActivateEvent;
 use App\Events\User\Activate as UserActivateEvent;
+use App\Events\User\ForgotPassword as UserForgotPasswordEvent;
+use App\Events\User\ChangePassword as UserChangePasswordEvent;
 use App\Http\Requests\User\Register as UserRegisterRequest;
 use App\Http\Requests\User\RegisterActivate as UserRegisterActivateRequest;
 use App\Http\Requests\User\Login as UserLoginRequest;
 use App\Http\Requests\User\Activate as UserActivateRequest;
+use App\Http\Requests\User\ForgotPassword as UserForgotPasswordRequest;
+use App\Http\Requests\User\ChangePassword as UserChangePasswordRequest;
 
 
 class UserController extends Controller
@@ -80,6 +84,33 @@ class UserController extends Controller
             event(new UserActivateEvent($user));
 
             return response()->success(compact('token', 'user'), 'Account activated', 200);
+        } else {
+            return response()->error('Invalid link', 400);
+        }
+    }
+
+    public function forgotPassword(UserForgotPasswordRequest $request)
+    {
+        $data = $request->only('email', 'url');
+        $user = User::where('email', $data['email'])->first();
+        $restorePasswordLink = str_replace_first('{hash}', md5($user->email.$user->created_at), $data['url']);
+
+        event(new UserForgotPasswordEvent($user, $restorePasswordLink));
+
+        return response()->success(compact('user'), 'Email for restore password sended', 201);
+    }
+
+    public function changePassword(UserChangePasswordRequest $request)
+    {
+        $data = $request->only('password', 'hash');
+        $user = User::whereRaw('MD5(CONCAT(email, created_at)) = "'. $data['hash'].'"')->first();
+        if ( ! empty($user)) {
+            $user->password = bcrypt($data['password']);
+            $user->save();
+
+            event(new UserChangePasswordEvent($user));
+
+            return response()->success(compact('user'), 'Password changed', 200);
         } else {
             return response()->error('Invalid link', 400);
         }
