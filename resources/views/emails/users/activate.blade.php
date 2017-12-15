@@ -7,6 +7,6 @@
 {{ __('Activate your account') }}
 @endcomponent
 
-Thanks,<br>
-{{ config('app.name') }} team
+{{ __('Thanks') }},<br>
+{{ __(config('app.name').' team') }}
 @endcomponent
