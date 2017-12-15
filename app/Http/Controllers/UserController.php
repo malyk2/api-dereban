@@ -134,4 +134,9 @@ class UserController extends Controller
         return response()->success([], 'Language changed', 200);
     }
 
+    public function getAuthUserInfo()
+    {
+        return response()->success(['user' => Auth::user()]);
+    }
+
 }
