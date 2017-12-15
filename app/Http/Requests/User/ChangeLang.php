@@ -3,8 +3,9 @@
 namespace App\Http\Requests\User;
 
 use App\Http\Requests\ApiRequest;
+use Illuminate\Validation\Rule;
 
-class RegisterActivate extends ApiRequest
+class ChangeLang extends ApiRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -27,9 +28,12 @@ class RegisterActivate extends ApiRequest
     public function rules()
     {
         return [
-            'email' => 'required|email|unique:users,email',
-            'password' => 'required|min:6',
-            'url' => 'required|url|urlHasHash'
+            'lang' => [
+                'required',
+                'string',
+                'size:2',
+                Rule::in(array_keys(config('app.locales'))),
+            ]
         ];
     }
     

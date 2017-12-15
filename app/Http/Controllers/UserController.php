@@ -2,16 +2,25 @@
 
 namespace App\Http\Controllers;
 
-use App\User;
 use Auth;
+
+use App\User;
+
 use App\Events\User\Login as UserLoginEvent;
 use App\Events\User\Register as UserRegisterEvent;
 use App\Events\User\RegisterActivate as UserRegisterActivateEvent;
 use App\Events\User\Activate as UserActivateEvent;
+use App\Events\User\ForgotPassword as UserForgotPasswordEvent;
+use App\Events\User\ChangePassword as UserChangePasswordEvent;
+use App\Events\User\СhangeLang as UserСhangeLangEvent;
+
 use App\Http\Requests\User\Register as UserRegisterRequest;
 use App\Http\Requests\User\RegisterActivate as UserRegisterActivateRequest;
 use App\Http\Requests\User\Login as UserLoginRequest;
 use App\Http\Requests\User\Activate as UserActivateRequest;
+use App\Http\Requests\User\ForgotPassword as UserForgotPasswordRequest;
+use App\Http\Requests\User\ChangePassword as UserChangePasswordRequest;
+use App\Http\Requests\User\ChangeLang as UserChangeLangRequest;
 
 class UserController extends Controller
 {
@@ -38,8 +47,8 @@ class UserController extends Controller
         $data['status'] = User::STATUS_NEW;
         $user = User::create($data);
 
-        $url = str_finish($data['url'], '/');
-        $activateLink = $url.md5($user->id.$user->created_at);
+        $activateLink = str_replace_first('{hash}', md5($user->id.$user->created_at), $data['url']);
+
         event(new UserRegisterActivateEvent($user, $activateLink));
 
         return response()->success(compact('user'), 'User created. Email to activate account sended.', 201);
@@ -82,6 +91,46 @@ class UserController extends Controller
         } else {
             return response()->error('Invalid link', 400);
         }
+    }
+
+    public function forgotPassword(UserForgotPasswordRequest $request)
+    {
+        $data = $request->only('email', 'url');
+        $user = User::where('email', $data['email'])->first();
+        $restorePasswordLink = str_replace_first('{hash}', md5($user->email.$user->created_at), $data['url']);
+
+        event(new UserForgotPasswordEvent($user, $restorePasswordLink));
+
+        return response()->success(compact('user'), 'Email for restore password sended', 201);
+    }
+
+    public function changePassword(UserChangePasswordRequest $request)
+    {
+        $data = $request->only('password', 'hash');
+        $user = User::whereRaw('MD5(CONCAT(email, created_at)) = "'. $data['hash'].'"')->first();
+        if ( ! empty($user)) {
+            $user->password = bcrypt($data['password']);
+            $user->save();
+
+            event(new UserChangePasswordEvent($user));
+
+            return response()->success(compact('user'), 'Password changed', 200);
+        } else {
+            return response()->error('Invalid link', 400);
+        }
+    }
+
+    public function changeLang(UserChangeLangRequest $request)
+    {
+        $data = $request->only('lang');
+        $user = Auth::user();
+        $user->lang = $data['lang'];
+        app()->setLocale($data['lang']);
+        $user->save();
+
+        event(new UserСhangeLangEvent($user));
+
+        return response()->success([], 'Language changed', 200);
     }
 
 }

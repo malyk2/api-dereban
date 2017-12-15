@@ -2,9 +2,10 @@
 
 namespace App\Http\Requests\User;
 
+use Illuminate\Validation\Rule;
 use App\Http\Requests\ApiRequest;
 
-class RegisterActivate extends ApiRequest
+class ForgotPassword extends ApiRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -27,8 +28,13 @@ class RegisterActivate extends ApiRequest
     public function rules()
     {
         return [
-            'email' => 'required|email|unique:users,email',
-            'password' => 'required|min:6',
+            'email' => [
+                'required',
+                'email',
+                Rule::exists('users')->where(function ($q) {
+                    $q->where('status', \App\User::STATUS_ACTIVE);
+                }),
+            ],
             'url' => 'required|url|urlHasHash'
         ];
     }
