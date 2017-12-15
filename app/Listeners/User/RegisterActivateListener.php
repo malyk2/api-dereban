@@ -2,6 +2,8 @@
 
 namespace App\Listeners\User;
 
+use App\Mail\UserActivate as MailUserActivate;
+use Illuminate\Support\Facades\Mail;
 use App\Events\User\RegisterActivate;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -26,6 +28,9 @@ class RegisterActivateListener
      */
     public function handle(RegisterActivate $event)
     {
-        //dd($event->activateLink);
+        $user = $event->user;
+        $user->activate_link = $event->activateLink;
+
+        Mail::to($user->email)->send(new MailUserActivate($user));
     }
 }
