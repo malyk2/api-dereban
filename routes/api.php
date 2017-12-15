@@ -15,6 +15,7 @@ Route::middleware('apilocale')->group(function (){
     //private routes
     Route::prefix('v1')->middleware('auth:api')->group(function(){
         Route::post('/user/changeLang', 'UserController@changeLang');
+        Route::get('/user/getAuthUserInfo', 'UserController@getAuthUserInfo');
     });
     
 });
