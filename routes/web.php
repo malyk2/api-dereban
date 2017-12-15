@@ -14,9 +14,3 @@
 Route::get('/', function () {
     echo "<h1>API</h1>";
 });
-
-Route::get('/mailable', function () {
-    $user = App\User::find(1);
-
-    return new App\Mail\UserCreate($user);
-});
