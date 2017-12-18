@@ -34,6 +34,9 @@ class EventServiceProvider extends ServiceProvider
         'App\Events\User\СhangeLang' => [
             'App\Listeners\User\СhangeLangListener',
         ],
+        'App\Events\Group\Сreate' => [
+            'App\Listeners\Group\СreateListener',
+        ],
     ];
 
     /**

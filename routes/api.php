@@ -1,7 +1,6 @@
 <?php
 Route::prefix('v1')->group(function() {
     Route::prefix('user')->group(function() {
-
         //public routes
         Route::post('register', 'UserController@register');
         Route::post('registerActivate', 'UserController@registerActivate');
@@ -9,11 +8,18 @@ Route::prefix('v1')->group(function() {
         Route::post('activate', 'UserController@activate');
         Route::post('forgotPassword', 'UserController@forgotPassword');
         Route::post('changePassword', 'UserController@changePassword');
-
         //private routes
         Route::middleware('auth:api')->group(function(){
             Route::post('changeLang', 'UserController@changeLang');
             Route::get('getAuthUserInfo', 'UserController@getAuthUserInfo');
+        });
+    });
+    Route::prefix('group')->group(function() {
+        //public routes
+        //private routes
+        Route::middleware('auth:api')->group(function(){
+            Route::post('create', 'GroupController@create');
+            Route::get('getAllUsersGroups', 'GroupController@getAllUsersGroups');
         });
     });
 });

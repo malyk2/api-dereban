@@ -13,21 +13,16 @@ class User extends Authenticatable
     const STATUS_NEW = 0;
     const STATUS_ACTIVE = 1;
 
-/**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
     protected $fillable = [
         'name', 'email', 'password', 'status', 'lang'
     ];
 
-    /**
-     * The attributes that should be hidden for arrays.
-     *
-     * @var array
-     */
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+    public function groups()
+    {
+        return $this->belongsToMany('App\Group', 'user_group');
+    }
 }
