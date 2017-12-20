@@ -21,7 +21,7 @@ use App\Http\Requests\User\Activate as UserActivateRequest;
 use App\Http\Requests\User\ForgotPassword as UserForgotPasswordRequest;
 use App\Http\Requests\User\ChangePassword as UserChangePasswordRequest;
 use App\Http\Requests\User\ChangeLang as UserChangeLangRequest;
-use App\Http\Requests\User\CheckExistByEmail as CheckExistByEmailRequest;
+use App\Http\Requests\User\CheckExistsByEmail as CheckExistsByEmailRequest;
 
 class UserController extends Controller
 {
@@ -139,7 +139,7 @@ class UserController extends Controller
         return response()->success(['user' => Auth::user()]);
     }
 
-    public function checkExistByEmail(CheckExistByEmailRequest $request)
+    public function checkExistsByEmail(CheckExistsByEmailRequest $request)
     {
         $data = $request->only('email');
         $exists = User::where('email', $data['email'])->exists();

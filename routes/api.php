@@ -12,7 +12,7 @@ Route::prefix('v1')->group(function() {
         Route::middleware('auth:api')->group(function(){
             Route::post('changeLang', 'UserController@changeLang');
             Route::get('getAuthUserInfo', 'UserController@getAuthUserInfo');
-            Route::post('checkExistByEmail', 'UserController@checkExistByEmail');
+            Route::post('checkExistsByEmail', 'UserController@checkExistsByEmail');
         });
     });
     Route::prefix('group')->group(function() {
