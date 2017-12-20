@@ -21,6 +21,7 @@ use App\Http\Requests\User\Activate as UserActivateRequest;
 use App\Http\Requests\User\ForgotPassword as UserForgotPasswordRequest;
 use App\Http\Requests\User\ChangePassword as UserChangePasswordRequest;
 use App\Http\Requests\User\ChangeLang as UserChangeLangRequest;
+use App\Http\Requests\User\CheckExistByEmail as CheckExistByEmailRequest;
 
 class UserController extends Controller
 {
@@ -136,6 +137,14 @@ class UserController extends Controller
     public function getAuthUserInfo()
     {
         return response()->success(['user' => Auth::user()]);
+    }
+
+    public function checkExistByEmail(CheckExistByEmailRequest $request)
+    {
+        $data = $request->only('email');
+        $exists = User::where('email', $data['email'])->exists();
+        $message = $exists ? 'User founded' : 'User not found';
+        return response()->success($exists, $message, 200);
     }
 
 }
