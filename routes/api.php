@@ -12,6 +12,7 @@ Route::prefix('v1')->group(function() {
         Route::middleware('auth:api')->group(function(){
             Route::post('changeLang', 'UserController@changeLang');
             Route::get('getAuthUserInfo', 'UserController@getAuthUserInfo');
+            Route::post('checkExistsByEmail', 'UserController@checkExistsByEmail');
         });
     });
     Route::prefix('group')->group(function() {
@@ -19,6 +20,8 @@ Route::prefix('v1')->group(function() {
         //private routes
         Route::middleware('auth:api')->group(function(){
             Route::post('create', 'GroupController@create');
+            Route::put('update/{group}', 'GroupController@update');
+            Route::delete('delete/{group}', 'GroupController@delete');
             Route::get('getAllUsersGroups', 'GroupController@getAllUsersGroups');
         });
     });

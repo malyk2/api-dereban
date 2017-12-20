@@ -16,7 +16,13 @@
     "and welcome to Dereban world!": ", вітаємо тебе у світі Dereban!",
     "Language changed": "Мову змінено",
     "Thanks": "Дякуємо",
+    "User not found": "Користувача не знайдено",
+    "User founded": "Користувача знайдено",
     "Dereban team": "команда Dereban",
-    "Group created": "Групу створено"
-
+    "Group created": "Групу створено",
+    "Group updated": "Групу оновлено",
+    "Group deleted": "Групу видалено",
+    "You are now owner of this group": "Ви не є власником даної групи",
+    "": "",
+    "": ""
 }

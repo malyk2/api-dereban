@@ -13,8 +13,19 @@ class Group extends Model
         'name', 'status'
     ];
 
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::deleted(function ($model)
+        {
+            $model->users()->detach();
+        });
+    }
+
     public function users()
     {
         return $this->belongsToMany('App\User', 'user_group')->withTimestamps();
     }
+
 }

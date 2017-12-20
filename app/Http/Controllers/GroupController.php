@@ -3,12 +3,14 @@ namespace App\Http\Controllers;
 
 use Auth;
 
-//use App\User;
 use App\Group;
 
 use App\Events\Group\Сreate as GroupСreateEvent;
+use App\Events\Group\Update as GroupUpdateEvent;
+use App\Events\Group\Delete as GroupDeleteEvent;
 
 use App\Http\Requests\Group\Create as GroupCreateRequest;
+use App\Http\Requests\Group\Update as GroupUpdateRequest;
 
 class GroupController extends Controller
 {
@@ -32,4 +34,33 @@ class GroupController extends Controller
         
         return response()->success(compact('groups'), '', 200);
     }
+
+    public function update(GroupUpdateRequest $request, Group $group)
+    {
+        $data = $request->only('name');
+        if (Auth::user()->isGroupOwner($group)) {
+            $group->name = $data['name'];
+            $group->save();
+
+            event(new GroupUpdateEvent($group));
+
+            return response()->success(compact($group),'Group updated', 202);
+        } else {
+            return response()->error('You are now owner of this group', 403);
+        }
+    }
+
+    public function delete(Group $group)
+    {
+        if (Auth::user()->isGroupOwner($group)) {
+            $group->delete();
+            
+            event(new GroupDeleteEvent($group));
+
+            return response()->success([],'Group deleted', 202);
+        } else {
+            return response()->error('You are now owner of this group', 403);
+        }
+    }
+
 }
