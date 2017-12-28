@@ -14,6 +14,14 @@ class UserList extends Resource
      */
     public function toArray($request)
     {
-        return parent::toArray($request);
+        return [
+            'id' => $this->id,
+            'name' => $this->name,
+            'email' => $this->email,
+            'status' => $this->status,
+            'isOwner' => $this->whenPivotLoaded('user_group', function () {
+                return ! empty($this->pivot->is_owner);
+            }),
+        ];
     }
 }

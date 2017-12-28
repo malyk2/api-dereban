@@ -25,7 +25,7 @@ class User extends Authenticatable
 
     public function groups()
     {
-        return $this->belongsToMany('App\Group', 'user_group')->withTimestamps();
+        return $this->belongsToMany('App\Group', 'user_group')->withTimestamps()->withPivot('is_owner');
     }
 
     public function isGroupOwner(Group $group)

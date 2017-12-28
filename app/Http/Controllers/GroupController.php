@@ -12,6 +12,8 @@ use App\Events\Group\Delete as GroupDeleteEvent;
 use App\Http\Requests\Group\Create as GroupCreateRequest;
 use App\Http\Requests\Group\Update as GroupUpdateRequest;
 
+use App\Http\Resources\Group\UserList as GroupUserListResourse;
+
 class GroupController extends Controller
 {
     public function create(GroupCreateRequest $request)
@@ -69,15 +71,9 @@ class GroupController extends Controller
         if ( ! $group->users->contains('id', $authUser->id)) {
             return response()->error('You are not user of this group', 403);
         } else {
-            //$users = $group->users->makeHidden('pivot');
-            //dd($group->users);
-            $users = $group->users;
-            //$users = \App\Http\Resources\User::collection($group->users);
+            $users = GroupUserListResourse::collection($group->users);
 
-            //return (new UserResource(User::find(1)))->response();
-            //return response()->success(compact('users'), '', 200);
-            return response()->success(compact('users'));
-            //return \App\Http\Resources\User::collection($group->users)->response()->success();
+            return response()->success(compact('users'), '', 200);
         }
     }
 

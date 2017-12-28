@@ -25,7 +25,7 @@ class Group extends Model
 
     public function users()
     {
-        return $this->belongsToMany('App\User', 'user_group')->withTimestamps();
+        return $this->belongsToMany('App\User', 'user_group')->withTimestamps()->withPivot('is_owner');
     }
 
 }
