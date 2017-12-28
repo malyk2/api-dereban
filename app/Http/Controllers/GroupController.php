@@ -12,6 +12,8 @@ use App\Events\Group\Delete as GroupDeleteEvent;
 use App\Http\Requests\Group\Create as GroupCreateRequest;
 use App\Http\Requests\Group\Update as GroupUpdateRequest;
 
+use App\Http\Resources\Group\UserList as GroupUserListResourse;
+
 class GroupController extends Controller
 {
     public function create(GroupCreateRequest $request)
@@ -60,6 +62,18 @@ class GroupController extends Controller
             return response()->success([],'Group deleted', 202);
         } else {
             return response()->error('You are now owner of this group', 403);
+        }
+    }
+
+    public function getGroupUsers(Group $group)
+    {
+        $authUser = Auth::user();
+        if ( ! $group->users->contains('id', $authUser->id)) {
+            return response()->error('You are not user of this group', 403);
+        } else {
+            $users = GroupUserListResourse::collection($group->users);
+
+            return response()->success(compact('users'), '', 200);
         }
     }
 

@@ -23,6 +23,7 @@ Route::prefix('v1')->group(function() {
             Route::put('update/{group}', 'GroupController@update');
             Route::delete('delete/{group}', 'GroupController@delete');
             Route::get('getAllUsersGroups', 'GroupController@getAllUsersGroups');
+            Route::get('getGroupUsers/{group}', 'GroupController@getGroupUsers');
         });
     });
 });
