@@ -60,7 +60,7 @@ class UserController extends Controller
         $data = $request->only('email', 'password');
         if (Auth::attempt(['email' => $data['email'], 'password' => $data['password']])) {
             $user = Auth::user();
-            if ($user->status != 1) {
+            if ($user->status != User::STATUS_ACTIVE) {
                 return response()->error('Account not activated', 401);
             }
             $token = $user->createToken('access_token')->accessToken;

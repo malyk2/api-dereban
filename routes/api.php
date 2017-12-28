@@ -24,6 +24,8 @@ Route::prefix('v1')->group(function() {
             Route::delete('delete/{group}', 'GroupController@delete');
             Route::get('getAllUsersGroups', 'GroupController@getAllUsersGroups');
             Route::get('getGroupUsers/{group}', 'GroupController@getGroupUsers');
+            Route::post('{group}/addRegisteredUserByEmail', 'GroupController@addRegisteredUserByEmail');
+            Route::post('{group}/addNewUserByEmail', 'GroupController@addNewUserByEmail');
         });
     });
 });

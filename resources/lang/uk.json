@@ -24,6 +24,8 @@
     "Group deleted": "Групу видалено",
     "You are now owner of this group": "Ви не є власником даної групи",
     "You are not user of this group": "Ви не є корисувачем даної групи",
+    "Current user is already in this group": "Даний користувач вже учасник даної групи",
+    "User added to group": "Користувача додано до групи",
     "": "",
     "": ""
 }
