@@ -2,6 +2,7 @@
 return [
     'url_has_hash' => ':attribute не містить секцію {hash} для подальшої заміни.',
     'required' => "Поле :attribute обов'язкове.",
+    'exists' => 'Поле :attribute недійсне.',
     'min'                  => [
         'numeric' => 'Поле :attribute має бути мінімум :min.',
         'file'    => 'Поле :attribute має бути мінімум :min кілобайт.',
