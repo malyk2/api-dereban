@@ -28,6 +28,16 @@ class User extends Authenticatable
         return $this->belongsToMany('App\Group', 'user_group')->withTimestamps()->withPivot('is_owner');
     }
 
+    public function inviteUsers()
+    {
+        return $this->belongsToMany('App\User', 'invite_users', 'user_id', 'invaited_user_id')->withTimestamps();
+    }
+
+    public function inviteNotifies()
+    {
+        return $this->belongsToMany('App\Group', 'invite_notifies')->withTimestamps();
+    }
+
     public function isGroupOwner(Group $group)
     {
         return $this->groups()->where('is_owner',1)->get()->contains('id', $group->id);

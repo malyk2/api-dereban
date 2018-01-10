@@ -2,22 +2,19 @@
 
 namespace App\Http\Requests\Group;
 
-use App\Http\Requests\ApiRequest;
+use Illuminate\Foundation\Http\FormRequest;
 
-class AddRegisteredUserByEmail extends ApiRequest
+class AddUser extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      *
      * @return bool
      */
-
-
     public function authorize()
     {
         return true;
     }
-
 
     /**
      * Get the validation rules that apply to the request.
@@ -27,8 +24,8 @@ class AddRegisteredUserByEmail extends ApiRequest
     public function rules()
     {
         return [
-            'email' => 'required|email|exists:users,email',
+            'email' => 'required|email',
+            'name' => 'required|string|max:255'
         ];
     }
-    
 }
