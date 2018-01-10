@@ -20,8 +20,10 @@ use App\Http\Requests\Group\AddUser as GroupAddUser;
 // use App\Http\Requests\Group\AddRegisteredUserByEmail as GroupAddRegisteredUserByEmailRequest;
 // use App\Http\Requests\Group\AddNewUserByEmail as GroupAddNewUserByEmailRequest;
 
-//use App\Http\Resources\Group\UserList as GroupUserListResourse;
+use App\Http\Resources\Group\UserList as GroupUserListResourse;
+use App\Http\Resources\User\InviteInfo as UserInviteInfoResourse;
 
+use App\Exceptions\ApiCustomException;
 
 class GroupController extends Controller
 {
@@ -48,30 +50,27 @@ class GroupController extends Controller
 
     public function update(GroupUpdateRequest $request, Group $group)
     {
+        $this->checkOwner($group);
         $data = $request->only('name');
-        if (Auth::user()->isGroupOwner($group)) {
-            $group->name = $data['name'];
-            $group->save();
 
-            event(new GroupUpdateEvent($group));
+        $group->name = $data['name'];
+        $group->save();
 
-            return response()->success(compact($group),'Group updated', 202);
-        } else {
-            return response()->error('You are now owner of this group', 403);
-        }
+        event(new GroupUpdateEvent($group));
+
+        return response()->success(compact($group),'Group updated', 202);
     }
 
     public function delete(Group $group)
     {
-        if (Auth::user()->isGroupOwner($group)) {
-            $group->delete();
+        $this->checkOwner($group);
 
-            event(new GroupDeleteEvent($group));
+        $group->delete();
 
-            return response()->success([],'Group deleted', 202);
-        } else {
-            return response()->error('You are now owner of this group', 403);
-        }
+        event(new GroupDeleteEvent($group));
+
+        return response()->success([],'Group deleted', 202);
+
     }
 
     public function getGroupUsers(Group $group)
@@ -123,30 +122,27 @@ class GroupController extends Controller
     public function addUserToGroup(GroupAddUser $request, Group $group)
     {
         $data = $request->only('email', 'name');
-        if (Auth::user()->isGroupOwner($group)) {
-            $groupUser = User::firstOrNew(['email' => $data['email']]);
-            if ( ! $groupUser->exists) {
-                $groupUser->name = $data['name'];
-                $groupUser->password = '';
-                $groupUser->status = User::STATUS_NEW;
-                $groupUser->save();
-                $groupUser->groups()->attach($group->id, [ 'is_owner' => false ]);
-                Auth::user()->inviteUsers()->attach($groupUser->id, ['name' => $data['name']]);
+        $this->checkOwner($group);
+        $groupUser = User::firstOrNew(['email' => $data['email']]);
+        if ( ! $groupUser->exists) {
+            $groupUser->name = $data['name'];
+            $groupUser->password = '';
+            $groupUser->status = User::STATUS_NEW;
+            $groupUser->save();
+        }
+        $group->addMember($groupUser);
+        Auth::user()->addToInviteUsers($groupUser, $data['name']);
 
-                event(new GroupAddUserEvent($group, $groupUser));
+        event(new GroupAddUserEvent($group, $groupUser));
 
-                return response()->success('');
-            } else {
-                if ($group->users->contains('id', $groupUser->id)) {
-                    return response()->error('Current user is already in this group', 400);
-                } else {
-                    $groupUser->groups()->attach($group->id, [ 'is_owner' => false ]);
+        $user = new UserInviteInfoResourse($groupUser);
+        return response()->success(compact('user'), 'User added to group');
+    }
 
-                    event(new GroupAddUserEvent($group, $groupUser));
-                }
-            }
-        } else {
-            return response()->error('You are now owner of this group', 403);
+    protected function checkOwner($group)
+    {
+        if ( ! Auth::user()->isGroupOwner($group)) {
+            throw (new ApiCustomException())->withMessage('You are not owner of this group')->withCode(403);
         }
     }
 

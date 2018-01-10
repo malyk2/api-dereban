@@ -23,6 +23,8 @@ use App\Http\Requests\User\ChangePassword as UserChangePasswordRequest;
 use App\Http\Requests\User\ChangeLang as UserChangeLangRequest;
 use App\Http\Requests\User\CheckExistsByEmail as CheckExistsByEmailRequest;
 
+use App\Http\Resources\User\InviteInfo as UserInviteInfoResourse;
+
 class UserController extends Controller
 {
     public function register(UserRegisterRequest $request)
@@ -142,9 +144,11 @@ class UserController extends Controller
     public function checkExistsByEmail(CheckExistsByEmailRequest $request)
     {
         $data = $request->only('email');
-        $exists = User::where('email', $data['email'])->exists();
+        $exists = User::where('email', $data['email'])->first();
         $message = $exists ? 'User founded' : 'User not found';
-        return response()->success($exists, $message, 200);
+        $user = ! empty($exists) ? new UserInviteInfoResourse($exists) : false;
+
+        return response()->success(compact('user'), $message, 200);
     }
 
 }

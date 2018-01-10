@@ -27,6 +27,7 @@ Route::prefix('v1')->group(function() {
             // Route::post('{group}/addRegisteredUserByEmail', 'GroupController@addRegisteredUserByEmail');
             // Route::post('{group}/addNewUserByEmail', 'GroupController@addNewUserByEmail');
             Route::post('{group}/addUserToGroup', 'GroupController@addUserToGroup');
+            // Route::delete('{group}/removeUser/{user}', 'GroupController@removeUser');
 
         });
     });
