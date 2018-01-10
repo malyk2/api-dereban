@@ -10,15 +10,10 @@ use App\Events\Group\Сreate as GroupСreateEvent;
 use App\Events\Group\Update as GroupUpdateEvent;
 use App\Events\Group\Delete as GroupDeleteEvent;
 use App\Events\Group\AddUser as GroupAddUserEvent;
-// use App\Events\Group\AddUserToGroup as
-// use App\Events\Group\AddRegisteredUserByEmail as GroupAddRegisteredUserByEmailEvent;
-// use App\Events\Group\AddNewUserByEmail as GroupAddNewUserByEmailEvent;
 
 use App\Http\Requests\Group\Create as GroupCreateRequest;
 use App\Http\Requests\Group\Update as GroupUpdateRequest;
 use App\Http\Requests\Group\AddUser as GroupAddUser;
-// use App\Http\Requests\Group\AddRegisteredUserByEmail as GroupAddRegisteredUserByEmailRequest;
-// use App\Http\Requests\Group\AddNewUserByEmail as GroupAddNewUserByEmailRequest;
 
 use App\Http\Resources\Group\UserList as GroupUserListResourse;
 use App\Http\Resources\User\InviteInfo as UserInviteInfoResourse;
@@ -85,40 +80,6 @@ class GroupController extends Controller
         }
     }
 
-    // public function addRegisteredUserByEmail(GroupAddRegisteredUserByEmailRequest $request, Group $group)
-    // {
-    //     $data = $request->only('email');
-    //     $authUser = Auth::user();
-    //     if (Auth::user()->isGroupOwner($group)) {
-    //         $user = User::where('email', $data['email'])->first();
-    //         if ( $group->users->contains('id', $user->id)) {
-    //             return response()->error('Current user is already in this group', 400);
-    //         } else {
-    //             $group->users()->attach([$user->id => [ 'is_owner' => false ]]);
-
-    //             event(new GroupAddRegisteredUserByEmailEvent($group, $user));
-
-    //             return response()->success([], 'User added to group');
-    //         }
-    //     } else {
-    //         return response()->error('You are now owner of this group', 403);
-    //     }
-    // }
-
-    // public function addNewUserByEmail(GroupAddNewUserByEmailRequest $request, Group $group)
-    // {
-    //     $data = $request->only('email', 'name');
-    //     $data['name'] =  empty($data['name']) ? explode('@', $data['email'])[0] : $data['name'];
-    //     $data['password'] = '';
-    //     $data['status'] = User::STATUS_NEW;
-    //     $user = User::create($data);
-    //     $group->users()->attach([$user->id => [ 'is_owner' => false ]]);
-
-    //     event(new GroupAddNewUserByEmailEvent($group, $user));
-
-    //     return response()->success([], 'User added to group');
-    // }
-
     public function addUserToGroup(GroupAddUser $request, Group $group)
     {
         $data = $request->only('email', 'name');
@@ -137,6 +98,13 @@ class GroupController extends Controller
 
         $user = new UserInviteInfoResourse($groupUser);
         return response()->success(compact('user'), 'User added to group');
+    }
+
+    public function removeUser(Group $group, User $user)
+    {
+        $this->checkOwner($group);
+        $group->removeMember($user);
+        return response()->success(true, 'User deleted from group');
     }
 
     protected function checkOwner($group)

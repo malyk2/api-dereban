@@ -39,5 +39,17 @@ class Group extends Model
         }
         $this->users()->attach([$user->id => ['is_owner' => false]]);
     }
+
+    public function removeMember(User $user)
+    {
+        $groupUser = $this->users()->find($user->id);
+        if ( empty($groupUser)) {
+            throw (new ApiCustomException())->withMessage('Current user are not in this group')->withCode(400);
+        } elseif ( ! empty($groupUser->pivot->is_owner)) {
+            throw (new ApiCustomException())->withMessage('Owner can not deleted form group')->withCode(400);
+        } else {
+            $this->users()->detach($user->id);
+        }
+    }
     /*End helper function*/
 }
