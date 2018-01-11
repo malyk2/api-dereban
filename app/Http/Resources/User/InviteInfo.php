@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Resources\Group;
+namespace App\Http\Resources\User;
 
 use Illuminate\Http\Resources\Json\Resource;
 
-class UserList extends Resource
+class InviteInfo extends Resource
 {
     /**
      * Transform the resource into an array.
@@ -20,10 +20,6 @@ class UserList extends Resource
             'inviteName' => $this->invite_name,
             'email' => $this->email,
             'avatar' => $this->avatar,
-            'status' => $this->status,
-            'isOwner' => $this->whenPivotLoaded('user_group', function () {
-                return ! empty($this->pivot->is_owner);
-            }),
         ];
     }
 }

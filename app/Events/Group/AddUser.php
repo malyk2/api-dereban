@@ -9,10 +9,10 @@ use Illuminate\Broadcasting\PresenceChannel;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
-use App\User;
 use App\Group;
+use App\User;
 
-class AddNewUserByEmail
+class AddUser
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
@@ -21,6 +21,7 @@ class AddNewUserByEmail
      *
      * @return void
      */
+
     public $group;
 
     public $user;

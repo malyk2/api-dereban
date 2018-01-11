@@ -2,11 +2,11 @@
 
 namespace App\Listeners\Group;
 
-use App\Events\Group\AddNewUserByEmail;
+use App\Events\Group\AddUser;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
-class AddNewUserByEmailListener
+class AddUserListener
 {
     /**
      * Create the event listener.
@@ -21,11 +21,11 @@ class AddNewUserByEmailListener
     /**
      * Handle the event.
      *
-     * @param  AddNewUserByEmail  $event
+     * @param  AddUser  $event
      * @return void
      */
-    public function handle(AddNewUserByEmail $event)
+    public function handle(AddUser $event)
     {
-        
+        //
     }
 }

@@ -43,11 +43,8 @@ class EventServiceProvider extends ServiceProvider
         'App\Events\Group\Delete' => [
             'App\Listeners\Group\DeleteListener',
         ],
-        'App\Events\Group\AddNewUserByEmail' => [
-            'App\Listeners\Group\AddNewUserByEmailListener',
-        ],
-        'App\Events\Group\AddRegisteredUserByEmail' => [
-            'App\Listeners\Group\AddRegisteredUserByEmailListener',
+        'App\Events\Group\AddUser' => [
+            'App\Listeners\Group\AddUserListener',
         ],
     ];
 
