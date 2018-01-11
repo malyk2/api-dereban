@@ -17,7 +17,9 @@ class UserList extends Resource
         return [
             'id' => $this->id,
             'name' => $this->name,
+            'inviteName' => $this->invite_name,
             'email' => $this->email,
+            'avatar' => $this->avatar,
             'status' => $this->status,
             'isOwner' => $this->whenPivotLoaded('user_group', function () {
                 return ! empty($this->pivot->is_owner);

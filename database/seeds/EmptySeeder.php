@@ -14,5 +14,7 @@ class EmptySeeder extends Seeder
         DB::table('users')->truncate();
         DB::table('groups')->truncate();
         DB::table('user_group')->truncate();
+        DB::table('invite_notifies')->truncate();
+        DB::table('invite_users')->truncate();
     }
 }
