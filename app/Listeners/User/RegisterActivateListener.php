@@ -29,6 +29,6 @@ class RegisterActivateListener
     {
         $user = $event->user;
         $user->activate_link = $event->activateLink;
-        SendMail::dispatch($user)->onQueue('emails');
+        SendMail::dispatch($user, $user->activate_link)->onQueue('emails');
     }
 }

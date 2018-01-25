@@ -16,15 +16,17 @@ class SendMail implements ShouldQueue
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     protected $user;
+    protected $link;
 
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct($user)
+    public function __construct($user, $link = false)
     {
         $this->user = $user;
+        $this->link = $link;
     }
 
     /**
@@ -34,7 +36,8 @@ class SendMail implements ShouldQueue
      */
     public function handle()
     {
-        if ( ! empty($this->user->activate_link)) {
+        if ( ! empty($this->link)) {
+            $this->user->activate_link = $this->link;
             Mail::to($this->user->email)->send(new MailUserActivate($this->user));
         } else {
             Mail::to($this->user->email)->send(new MailUserCreate($this->user));
