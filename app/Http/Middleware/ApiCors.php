@@ -20,6 +20,7 @@ class ApiCors
             $origin = $request->server()['HTTP_ORIGIN'];
             if (in_array($origin, $domains)) {
                 header('Access-Control-Allow-Origin: '.$origin);
+                header('Access-Control-Allow-Methods: GET, POST, PUT, PUSH, DELETE, OPTIONS');
                 header('Access-Control-Allow-Headers: Origin, Content-type, Authorization');
             }
         }

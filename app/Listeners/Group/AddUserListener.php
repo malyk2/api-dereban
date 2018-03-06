@@ -1,13 +1,12 @@
 <?php
 
-namespace App\Listeners\User;
+namespace App\Listeners\Group;
 
-use App\Events\User\Register;
+use App\Events\Group\AddUser;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use App\Jobs\SendMail;
 
-class RegisterListener
+class AddUserListener
 {
     /**
      * Create the event listener.
@@ -22,12 +21,11 @@ class RegisterListener
     /**
      * Handle the event.
      *
-     * @param  Register  $event
+     * @param  AddUser  $event
      * @return void
      */
-    public function handle(Register $event)
+    public function handle(AddUser $event)
     {
-        $user = $event->user;
-        SendMail::dispatch($user)->onQueue('emails');
+        //
     }
 }

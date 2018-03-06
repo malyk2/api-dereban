@@ -43,6 +43,9 @@ class EventServiceProvider extends ServiceProvider
         'App\Events\Group\Delete' => [
             'App\Listeners\Group\DeleteListener',
         ],
+        'App\Events\Group\AddUser' => [
+            'App\Listeners\Group\AddUserListener',
+        ],
     ];
 
     /**
