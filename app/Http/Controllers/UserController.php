@@ -27,6 +27,40 @@ use App\Http\Resources\User\InviteInfo as UserInviteInfoResourse;
 
 class UserController extends Controller
 {
+    /**
+    * @SWG\Post(
+    *   path="/user/register",
+    *   summary="Register user",
+    *   operationId="getCustomerRates",
+    *   tags={"users"},
+    *   @SWG\Parameter(
+    *     name="email",
+    *     in="formData",
+    *     description="New user email",
+    *     required=true,
+    *     type="string"
+    *   ),
+    *   @SWG\Parameter(
+    *     name="password",
+    *     in="formData",
+    *     description="New user password",
+    *     required=true,
+    *     type="string"
+    *   ),
+    *   @SWG\Parameter(
+    *     name="lang",
+    *     in="formData",
+    *     description="New user language",
+    *     required=false,
+    *     enum={"en", "uk", "ru"},
+    *     type="string"
+    *   ),
+    *   @SWG\Response(response=200, description="successful operation"),
+    *   @SWG\Response(response=422, description="validate error"),
+    *   @SWG\Response(response=500, description="internal server error")
+    * )
+    *
+    */
     public function register(UserRegisterRequest $request)
     {
         $data = $request->only('email', 'password');
@@ -57,6 +91,40 @@ class UserController extends Controller
         return response()->success(compact('user'), 'User created. Email to activate account sended.', 201);
     }
 
+    /**
+    * @SWG\Post(
+    *   path="/user/login",
+    *   summary="Login user",
+    *   operationId="asd",
+    *   tags={"users"},
+    *   @SWG\Parameter(
+    *     name="email",
+    *     in="formData",
+    *     description="New user email",
+    *     required=true,
+    *     type="string"
+    *   ),
+    *   @SWG\Parameter(
+    *     name="password",
+    *     in="formData",
+    *     description="New user password",
+    *     required=true,
+    *     type="string"
+    *   ),
+    *   @SWG\Parameter(
+    *     name="lang",
+    *     in="formData",
+    *     description="New user language",
+    *     required=false,
+    *     enum={"active", "expired", "scheduled"},
+    *     type="string"
+    *   ),
+    *   @SWG\Response(response=200, description="successful operation"),
+    *   @SWG\Response(response=422, description="Validate error"),
+    *   @SWG\Response(response=500, description="internal server error")
+    * )
+    *
+    */
     public function login(UserLoginRequest $request)
     {
         $data = $request->only('email', 'password');
@@ -136,6 +204,20 @@ class UserController extends Controller
         return response()->success([], 'Language changed', 200);
     }
 
+    /**
+    * @SWG\Get(
+    *   path="/user/getAuthUserInfo",
+    *   summary="Get info about auth user",
+    *   tags={"users"},
+    *   security={
+    *     {"passport": {}},
+    *   },
+    *   @SWG\Response(response=200, description="successful operation"),
+    *   @SWG\Response(response=406, description="not acceptable"),
+    *   @SWG\Response(response=500, description="internal server error")
+    * )
+    *
+    */
     public function getAuthUserInfo()
     {
         return response()->success(['user' => Auth::user()]);
