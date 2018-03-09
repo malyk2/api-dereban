@@ -16,6 +16,13 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
  *  schemes={"http"},
  *
  * )
+ * @SWG\SecurityScheme(
+ *   securityDefinition="passport",
+ *   type="oauth2",
+ *   tokenUrl="/oauth/token",
+ *   flow="password",
+ *   scopes={}
+ * )
  */
 class Controller extends BaseController
 {

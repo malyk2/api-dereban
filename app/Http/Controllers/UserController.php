@@ -210,7 +210,8 @@ class UserController extends Controller
     *   summary="Get info about auth user",
     *   tags={"users"},
     *   security={
-    *   {"passport": {}},},
+    *     {"passport": {}},
+    *   },
     *   @SWG\Response(response=200, description="successful operation"),
     *   @SWG\Response(response=406, description="not acceptable"),
     *   @SWG\Response(response=500, description="internal server error")
