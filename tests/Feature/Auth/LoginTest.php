@@ -5,8 +5,10 @@ namespace Tests\Feature;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
-class ExampleTest extends TestCase
+class LoginTest extends TestCase
 {
+    private $path = '/api/v1/login';
+
     /**
      * A basic test example.
      *
@@ -14,7 +16,10 @@ class ExampleTest extends TestCase
      */
     public function testBasicTest()
     {
-        $response = $this->get('/');
+        $response = $this->post($this->path, [
+            'email' => 'id@div-art.com',
+            'password' => '123456',
+        ]);
 
         $response->assertStatus(200);
     }

@@ -6,7 +6,7 @@ use Auth;
 
 use App\User;
 
-use App\Events\User\Login as UserLoginEvent;
+
 use App\Events\User\Register as UserRegisterEvent;
 use App\Events\User\RegisterActivate as UserRegisterActivateEvent;
 use App\Events\User\Activate as UserActivateEvent;
@@ -16,7 +16,6 @@ use App\Events\User\СhangeLang as UserСhangeLangEvent;
 
 use App\Http\Requests\User\Register as UserRegisterRequest;
 use App\Http\Requests\User\RegisterActivate as UserRegisterActivateRequest;
-use App\Http\Requests\User\Login as UserLoginRequest;
 use App\Http\Requests\User\Activate as UserActivateRequest;
 use App\Http\Requests\User\ForgotPassword as UserForgotPasswordRequest;
 use App\Http\Requests\User\ChangePassword as UserChangePasswordRequest;
@@ -27,6 +26,40 @@ use App\Http\Resources\User\InviteInfo as UserInviteInfoResourse;
 
 class UserController extends Controller
 {
+    /**
+    * @SWG\Post(
+    *   path="/user/register",
+    *   summary="Register user",
+    *   operationId="getCustomerRates",
+    *   tags={"users"},
+    *   @SWG\Parameter(
+    *     name="email",
+    *     in="formData",
+    *     description="New user email",
+    *     required=true,
+    *     type="string"
+    *   ),
+    *   @SWG\Parameter(
+    *     name="password",
+    *     in="formData",
+    *     description="New user password",
+    *     required=true,
+    *     type="string"
+    *   ),
+    *   @SWG\Parameter(
+    *     name="lang",
+    *     in="formData",
+    *     description="New user language",
+    *     required=false,
+    *     enum={"en", "uk", "ru"},
+    *     type="string"
+    *   ),
+    *   @SWG\Response(response=200, description="successful operation"),
+    *   @SWG\Response(response=422, description="validate error"),
+    *   @SWG\Response(response=500, description="internal server error")
+    * )
+    *
+    */
     public function register(UserRegisterRequest $request)
     {
         $data = $request->only('email', 'password');
@@ -57,24 +90,7 @@ class UserController extends Controller
         return response()->success(compact('user'), 'User created. Email to activate account sended.', 201);
     }
 
-    public function login(UserLoginRequest $request)
-    {
-        $data = $request->only('email', 'password');
-        if (Auth::attempt(['email' => $data['email'], 'password' => $data['password']])) {
-            $user = Auth::user();
-            if ($user->status != User::STATUS_ACTIVE) {
-                return response()->error('Account not activated', 401);
-            }
-            $token = $user->createToken('access_token')->accessToken;
-
-            event(new UserLoginEvent($user));
-
-            return response()->success(compact('token', 'user'), 'Login success', 200);
-
-        } else {
-            return response()->error('Unauthorized', 401);
-        }
-    }
+    
 
     public function activate(UserActivateRequest $request)
     {
@@ -136,6 +152,20 @@ class UserController extends Controller
         return response()->success([], 'Language changed', 200);
     }
 
+    /**
+    * @SWG\Get(
+    *   path="/user/getAuthUserInfo",
+    *   summary="Get info about auth user",
+    *   tags={"users"},
+    *   security={
+    *     {"passport": {}},
+    *   },
+    *   @SWG\Response(response=200, description="successful operation"),
+    *   @SWG\Response(response=406, description="not acceptable"),
+    *   @SWG\Response(response=500, description="internal server error")
+    * )
+    *
+    */
     public function getAuthUserInfo()
     {
         return response()->success(['user' => Auth::user()]);
