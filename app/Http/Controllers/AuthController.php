@@ -21,6 +21,13 @@ use App\Events\Auth\ChangePassword as AuthChangePasswordEvent;
 class AuthController extends Controller
 {
     /**
+    * @SWG\Definition(
+    *   definition="UserToken",
+    *   type="string",
+    *   example="eyJ0eXAiOiJKV1QiL ...",
+    * )
+    */
+    /**
     * @SWG\Post(
     *   path="/login",
     *   summary="Login",
@@ -40,7 +47,7 @@ class AuthController extends Controller
     *     required=true,
     *     type="string"
     *   ),
-    *   @SWG\Response(response=200, description="successful operation")
+    *   @SWG\Response(response=200, description="Return user token ", @SWG\Schema(ref="#/definitions/UserToken"),),
     * )
     *
     */
