@@ -1,12 +1,13 @@
 <?php
 
-namespace App\Listeners\User;
+namespace App\Listeners\Auth;
 
-use App\Events\User\ChangePassword;
+use App\Events\User\Register;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use App\Jobs\SendMail;
 
-class ChangePasswordListener
+class RegisterListener
 {
     /**
      * Create the event listener.
@@ -21,11 +22,12 @@ class ChangePasswordListener
     /**
      * Handle the event.
      *
-     * @param  ChangePassword  $event
+     * @param  Register  $event
      * @return void
      */
-    public function handle(ChangePassword $event)
+    public function handle(Register $event)
     {
-        
+        $user = $event->user;
+        SendMail::dispatch($user)->onQueue('emails');
     }
 }

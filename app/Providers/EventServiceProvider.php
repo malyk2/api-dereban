@@ -16,20 +16,20 @@ class EventServiceProvider extends ServiceProvider
         'App\Events\Auth\Login' => [
             'App\Listeners\Auth\LoginListener',
         ],
-        'App\Events\User\Register' => [
-            'App\Listeners\User\RegisterListener',
+        'App\Events\Auth\Register' => [
+            'App\Listeners\Auth\RegisterListener',
         ],
-        'App\Events\User\RegisterActivate' => [
-            'App\Listeners\User\RegisterActivateListener',
+        'App\Events\Auth\RegisterActivate' => [
+            'App\Listeners\Auth\RegisterActivateListener',
         ],
-        'App\Events\User\Activate' => [
-            'App\Listeners\User\ActivateListener',
+        'App\Events\Auth\Activate' => [
+            'App\Listeners\Auth\ActivateListener',
         ],
-        'App\Events\User\ForgotPassword' => [
-            'App\Listeners\User\ForgotPasswordListener',
+        'App\Events\Auth\ForgotPassword' => [
+            'App\Listeners\Auth\ForgotPasswordListener',
         ],
-        'App\Events\User\ChangePassword' => [
-            'App\Listeners\User\ChangePasswordListener',
+        'App\Events\Auth\ChangePassword' => [
+            'App\Listeners\Auth\ChangePasswordListener',
         ],
         'App\Events\User\СhangeLang' => [
             'App\Listeners\User\СhangeLangListener',

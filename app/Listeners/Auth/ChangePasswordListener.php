@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Listeners\User;
+namespace App\Listeners\Auth;
 
-use App\Events\User\ForgotPassword;
+use App\Events\User\ChangePassword;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
-class ForgotPasswordListener
+class ChangePasswordListener
 {
     /**
      * Create the event listener.
@@ -21,11 +21,11 @@ class ForgotPasswordListener
     /**
      * Handle the event.
      *
-     * @param  ForgotPassword  $event
+     * @param  ChangePassword  $event
      * @return void
      */
-    public function handle(ForgotPassword $event)
+    public function handle(ChangePassword $event)
     {
-        
+
     }
 }

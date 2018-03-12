@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Listeners\User;
+namespace App\Listeners\Auth;
 
 use App\Events\Auth\Login;
 use Illuminate\Queue\InteractsWithQueue;

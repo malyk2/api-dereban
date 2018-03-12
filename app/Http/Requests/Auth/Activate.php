@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\User;
+namespace App\Http\Requests\Auth;
 
 use App\Http\Requests\ApiRequest;
 
-class Register extends ApiRequest
+class Activate extends ApiRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -27,9 +27,8 @@ class Register extends ApiRequest
     public function rules()
     {
         return [
-            'email' => 'required|email|unique:users,email',
-            'password' => 'required|min:6'
+            'hash' => 'required',
         ];
     }
-    
+
 }

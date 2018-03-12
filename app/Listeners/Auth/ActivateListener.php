@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Listeners\User;
+namespace App\Listeners\Auth;
 
 use App\Events\User\Activate;
 use Illuminate\Queue\InteractsWithQueue;
@@ -13,8 +13,8 @@ class ActivateListener
      *
      * @return void
      */
-    
-    
+
+
     public function __construct()
     {
         //
@@ -28,6 +28,6 @@ class ActivateListener
      */
     public function handle(Activate $event)
     {
-        
+
     }
 }

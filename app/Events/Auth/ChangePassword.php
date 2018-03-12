@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Events\User;
+namespace App\Events\Auth;
 
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Queue\SerializesModels;
@@ -10,8 +10,7 @@ use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use App\User;
-
-class Activate
+class ChangePassword
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 

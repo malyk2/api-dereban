@@ -1,13 +1,12 @@
 <?php
 
-namespace App\Listeners\User;
+namespace App\Listeners\Auth;
 
-use App\Events\User\Register;
+use App\Events\User\ForgotPassword;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use App\Jobs\SendMail;
 
-class RegisterListener
+class ForgotPasswordListener
 {
     /**
      * Create the event listener.
@@ -22,12 +21,11 @@ class RegisterListener
     /**
      * Handle the event.
      *
-     * @param  Register  $event
+     * @param  ForgotPassword  $event
      * @return void
      */
-    public function handle(Register $event)
+    public function handle(ForgotPassword $event)
     {
-        $user = $event->user;
-        SendMail::dispatch($user)->onQueue('emails');
+
     }
 }

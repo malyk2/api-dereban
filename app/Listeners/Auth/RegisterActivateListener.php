@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Listeners\User;
+namespace App\Listeners\Auth;
 
 use App\Events\User\RegisterActivate;
 use Illuminate\Queue\InteractsWithQueue;

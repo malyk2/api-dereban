@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Events\User;
+namespace App\Events\Auth;
 
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Queue\SerializesModels;
@@ -10,7 +10,8 @@ use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use App\User;
-class ChangePassword
+
+class ForgotPassword
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
@@ -21,9 +22,12 @@ class ChangePassword
      */
     public $user;
 
-    public function __construct(User $user)
+    public $restorePasswordLink;
+
+    public function __construct(User $user, $restorePasswordLink)
     {
         $this->user = $user;
+        $this->restorePasswordLink = $restorePasswordLink;
     }
 
     /**

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests\User;
+namespace App\Http\Requests\Auth;
 
 use Illuminate\Validation\Rule;
 use App\Http\Requests\ApiRequest;
@@ -38,5 +38,5 @@ class ForgotPassword extends ApiRequest
             'url' => 'required|url|urlHasHash'
         ];
     }
-    
+
 }

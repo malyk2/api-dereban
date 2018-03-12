@@ -2,11 +2,11 @@
 Route::prefix('v1')->group(function() {
     //public routes
     Route::post('login', 'AuthController@login');
-    Route::post('register', 'UserController@register');
-    Route::post('registerActivate', 'UserController@registerActivate');
-    Route::post('activate', 'UserController@activate');
-    Route::post('forgotPassword', 'UserController@forgotPassword');
-    Route::post('changePassword', 'UserController@changePassword');
+    Route::post('register', 'AuthController@register');
+    Route::post('registerActivate', 'AuthController@registerActivate');
+    Route::post('activate', 'AuthController@activate');
+    Route::post('forgotPassword', 'AuthController@forgotPassword');
+    Route::post('changePassword', 'AuthController@changePassword');
 
     Route::prefix('user')->group(function() {
         //private routes
