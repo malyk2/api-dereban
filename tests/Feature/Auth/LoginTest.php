@@ -2,46 +2,52 @@
 
 namespace Tests\Feature;
 
-// use Tests\TestCase;
 use Tests\ApiTestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-// use Illuminate\Support\Facades\Artisan;
 use App\User;
 
 class LoginTest extends ApiTestCase
 {
     use RefreshDatabase;
 
-    private $path = '/api/v1/login';
+    protected $path = '/api/v1/login';
+
+    protected $method = 'POST';
 
     /** @test */
     public function validate_email_required()
     {
-        $response = $this->post($this->path, [
+        $response = $this->sendJson([
             'email' => '',
             'password' => 'password',
         ]);
-        $response->assertStatus(422);
+        $response->assertStatus(422)->assertJson([
+            'validate' => ['email' => ['The email field is required.']],
+        ]);
     }
 
     /** @test */
     public function validate_email_email()
     {
-        $response = $this->post($this->path, [
+        $response = $this->sendJson([
             'email' => 'not-valid email',
             'password' => 'password',
         ]);
-        $response->assertStatus(422);
+        $response->assertStatus(422)->assertJson([
+            'validate' => ['email' => []],
+        ]);
     }
 
     /** @test */
     public function validate_password_required()
     {
-        $response = $this->post($this->path, [
+        $response = $this->sendJson([
             'email' => 'test@div-art.com',
             'password' => '',
         ]);
-        $response->assertStatus(422);
+        $response->assertStatus(422)->assertJson([
+            'validate' => ['password' => []],
+        ]);
     }
 
     /** @test */
@@ -49,11 +55,13 @@ class LoginTest extends ApiTestCase
     {
         factory(User::class, 1)->create(['active' => 0, 'email' => 'test@div-art.com', 'password' => bcrypt('password')]);
 
-        $response = $this->post($this->path, [
+        $response = $this->sendJson([
             'email' => 'test@div-art.com',
             'password' => 'password',
         ]);
-        $response->assertStatus(400);
+        $response->assertStatus(400)->assertJson([
+            'validate' => null,
+        ]);
     }
 
     /** @test */
@@ -61,25 +69,30 @@ class LoginTest extends ApiTestCase
     {
         factory(User::class, 1)->create(['deleted' => 1, 'email' => 'test@div-art.com', 'password' => bcrypt('password')]);
 
-        $response = $this->post($this->path, [
+        $response = $this->sendJson([
             'email' => 'test@div-art.com',
             'password' => 'password',
         ]);
+
         $response->assertStatus(400);
     }
 
-     /** @test */
-     public function success_login_active_user()
-     {
+    /** @test */
+    public function success_login_active_user()
+    {
         $this->passportInstall();
         $this->fakeEvents();
 
-        factory(User::class, 1)->create(['active' => 1, 'email' => 'test@div-art.com', 'password' => bcrypt('password')]);
+        $userData = ['active' => 1, 'email' => 'test@div-art.com', 'password' => bcrypt('password')];
 
-        $response = $this->post($this->path, [
+        factory(User::class, 1)->create($userData);
+
+        $response = $this->sendJson([
             'email' => 'test@div-art.com',
             'password' => 'password',
         ]);
         $response->assertStatus(200);
-     }
+
+        $this->assertDatabaseHas('users', $userData);
+    }
 }

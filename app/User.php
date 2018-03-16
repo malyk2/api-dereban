@@ -24,6 +24,12 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
+    protected $attributes = [
+        'active' => false,
+        'deleted' => false,
+        'status' => self::STATUS_NEW,
+    ];
+
     /*Start relations*/
     public function groups()
     {
@@ -47,6 +53,11 @@ class User extends Authenticatable
         $authUser = Auth::user();
         $inviteUser = $authUser->inviteUsers()->find($this->id);
         return ! empty($inviteUser) ? $inviteUser->pivot->name : $this->name;
+    }
+
+    public function setPasswordAttribute($value)
+    {
+        $this->attributes['password'] = bcrypt($value);
     }
     /*End mutators*/
 

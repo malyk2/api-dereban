@@ -2,7 +2,7 @@
 
 namespace App\Listeners\Auth;
 
-use App\Events\User\Register;
+use App\Events\Auth\Register;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use App\Jobs\SendMail;

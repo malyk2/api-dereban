@@ -113,15 +113,12 @@ class AuthController extends Controller
         $data = $request->only('email', 'password');
         $data['name'] = explode('@', $data['email'])[0];
         $data['lang'] = app()->getLocale();
-        $data['password'] = bcrypt($data['password']);
-        $data['status'] = User::STATUS_ACTIVE;
-        $data['active'] = true;
         $user = User::create($data);
         $token = $user->createToken('access_token')->accessToken;
 
         event(new AuthRegisterEvent($user));
 
-        return response()->success(compact('token', 'user'), 'User created', 201);
+        return response()->success([], 'User created', 201);
     }
 
     public function registerActivate(UserRegisterActivateRequest $request) {
