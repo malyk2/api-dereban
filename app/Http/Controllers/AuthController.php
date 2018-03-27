@@ -31,7 +31,6 @@ class AuthController extends Controller
     * @SWG\Post(
     *   path="/login",
     *   summary="Login",
-    *   operationId="asd",
     *   tags={"Auth"},
     *   @SWG\Parameter(
     *     name="email",
@@ -78,7 +77,6 @@ class AuthController extends Controller
     * @SWG\Post(
     *   path="/register",
     *   summary="Register user",
-    *   operationId="getCustomerRates",
     *   tags={"Auth"},
     *   @SWG\Parameter(
     *     name="email",
@@ -123,7 +121,47 @@ class AuthController extends Controller
         return response()->success([], 'User created.', 201);
     }
 
-    public function registerActivate(UserRegisterActivateRequest $request) {
+    /**
+    * @SWG\Post(
+    *   path="/registerActivate",
+    *   summary="Register user with send email to activate account",
+    *   tags={"Auth"},
+    *   @SWG\Parameter(
+    *     name="email",
+    *     in="formData",
+    *     description="New user email",
+    *     required=true,
+    *     type="string"
+    *   ),
+    *   @SWG\Parameter(
+    *     name="password",
+    *     in="formData",
+    *     description="New user password",
+    *     required=true,
+    *     type="string"
+    *   ),
+    *   @SWG\Parameter(
+    *     name="url",
+    *     in="formData",
+    *     description="Url with {hash} section",
+    *     required=true,
+    *     type="string"
+    *   ),
+    *   @SWG\Parameter(
+    *     name="lang",
+    *     in="formData",
+    *     description="New user language",
+    *     required=false,
+    *     enum={"en", "uk", "ru"},
+    *     type="string"
+    *   ),
+    *   @SWG\Response(response=200, description="successful operation"),
+    *   @SWG\Response(response=422, description="validate error"),
+    *   @SWG\Response(response=500, description="internal server error")
+    * )
+    *
+    */
+    public function registerActivate(AuthRegisterActivateRequest $request) {
         $data = $request->only('email', 'password', 'url');
         $data['name'] = explode('@', $data['email'])[0];
         $data['lang'] = app()->getLocale();
@@ -131,11 +169,11 @@ class AuthController extends Controller
         $data['active'] = false;
         $user = User::create($data);
 
-        $activateLink = str_replace_first('{hash}', md5($user->id.$user->created_at), $data['url']);
+        $activateLink = str_replace_first('{hash}', $user->getactivateHash(), $data['url']);
 
-        event(new UserRegisterActivateEvent($user, $activateLink));
+        event(new AuthRegisterActivateEvent($user, $activateLink));
 
-        return response()->success(compact('user'), 'User created. Email to activate account sended.', 201);
+        return response()->success([], 'User created. Email to activate account sended.', 201);
     }
 
     public function activate(UserActivateRequest $request)
