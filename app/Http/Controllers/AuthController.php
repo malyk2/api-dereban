@@ -169,7 +169,7 @@ class AuthController extends Controller
         $data['active'] = false;
         $user = User::create($data);
 
-        $activateLink = str_replace_first('{hash}', $user->getactivateHash(), $data['url']);
+        $activateLink = str_replace_first('{hash}', $user->getHashActivate(), $data['url']);
 
         event(new AuthRegisterActivateEvent($user, $activateLink));
 
@@ -222,15 +222,49 @@ class AuthController extends Controller
         }
     }
 
-    public function forgotPassword(UserForgotPasswordRequest $request)
+    /**
+    * @SWG\Post(
+    *   path="/forgotPassword",
+    *   summary="Forgot Password email",
+    *   tags={"Auth"},
+    *   @SWG\Parameter(
+    *     name="email",
+    *     in="formData",
+    *     description="New user email",
+    *     required=true,
+    *     type="string"
+    *   ),
+    *   @SWG\Parameter(
+    *     name="url",
+    *     in="formData",
+    *     description="Url with {hash} section",
+    *     required=true,
+    *     type="string"
+    *   ),
+    *   @SWG\Parameter(
+    *     name="lang",
+    *     in="formData",
+    *     description="New user language",
+    *     required=false,
+    *     enum={"en", "uk", "ru"},
+    *     type="string"
+    *   ),
+    *
+    *   @SWG\Response(response=200, description="successful operation"),
+    *   @SWG\Response(response=422, description="validate error"),
+    *   @SWG\Response(response=500, description="internal server error")
+    * )
+    *
+    */
+    public function forgotPassword(AuthForgotPasswordRequest $request)
     {
         $data = $request->only('email', 'url');
         $user = User::where('email', $data['email'])->first();
-        $restorePasswordLink = str_replace_first('{hash}', md5($user->email.$user->created_at), $data['url']);
+        $restorePasswordLink = str_replace_first('{hash}', $user->getHashForgotPassword(), $data['url']);
 
-        event(new UserForgotPasswordEvent($user, $restorePasswordLink));
+        event(new AuthForgotPasswordEvent($user, $restorePasswordLink));
 
-        return response()->success(compact('user'), 'Email for restore password sended', 201);
+        return response()->success([], 'Email for restore password sended.', 200);
     }
 
     public function changePassword(UserChangePasswordRequest $request)

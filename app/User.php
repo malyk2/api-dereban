@@ -74,9 +74,19 @@ class User extends Authenticatable
         $this->inviteUsers()->attach([$user->id => ['name' => $name]]);
     }
 
-    public function getactivateHash()
+    public function getHashActivate()
     {
         return md5($this->id.$this->created_at);
     }
+
+    public function getHashForgotPassword()
+    {
+        return md5($this->email.$this->created_at);
+    }
+
+    // public function getactivateHash()
+    // {
+    //     return md5($this->id.$this->created_at);
+    // }
     /*End helper function*/
 }

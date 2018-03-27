@@ -32,7 +32,7 @@ class ForgotPassword extends ApiRequest
                 'required',
                 'email',
                 Rule::exists('users')->where(function ($q) {
-                    $q->where('status', \App\User::STATUS_ACTIVE);
+                    $q->where('active', true);
                 }),
             ],
             'url' => 'required|url|urlHasHash'

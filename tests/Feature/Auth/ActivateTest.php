@@ -44,7 +44,7 @@ class ActivateTest extends ApiTestCase
         $user = factory(User::class)->create(['email' => 'test@div-art.com', 'password' => 'password', 'active' => true]);
 
         $response = $this->sendJson([
-            'hash' => $user->getactivateHash(),
+            'hash' => $user->getHashActivate(),
         ]);
         $response->assertStatus(405)->assertJson([
             'validate' => null,

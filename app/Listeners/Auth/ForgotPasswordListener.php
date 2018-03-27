@@ -2,7 +2,7 @@
 
 namespace App\Listeners\Auth;
 
-use App\Events\User\ForgotPassword;
+use App\Events\Auth\ForgotPassword;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
