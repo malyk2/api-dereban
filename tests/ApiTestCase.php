@@ -8,6 +8,12 @@ use Illuminate\Support\Facades\Event;
 
 class ApiTestCase extends TestCase
 {
+    protected function setUp()
+    {
+        parent::setUp();
+        app()->setLocale('test');
+    }
+
     protected function sendJson($data = [])
     {
         return $this->json($this->method, $this->path, $data);

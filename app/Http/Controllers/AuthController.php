@@ -55,23 +55,23 @@ class AuthController extends Controller
     {
         $data = $request->only('email', 'password');
         if ( ! auth()->attempt($data)) {
-            return response()->error('Email or Password is invalid', 400);
+            return response()->error('Email or Password is invalid.', 400);
         }
 
         $user = auth()->user();
         if ($user->deleted) {
-            return response()->error('Email or Password is invalid', 400);
+            return response()->error('Email or Password is invalid.', 400);
         }
 
         if ( ! $user->active) {
-            return response()->error('Account is not active', 400);
+            return response()->error('Account is not active.', 400);
         }
 
         $token = $user->createToken('access_token')->accessToken;
 
         event(new AuthLoginEvent($user));
 
-        return response()->success($token, 'Login success', 200);
+        return response()->success($token, 'Login success.', 200);
     }
 
     /**

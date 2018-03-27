@@ -34,7 +34,7 @@ class LoginTest extends ApiTestCase
             'password' => 'password',
         ]);
         $response->assertStatus(422)->assertJson([
-            'validate' => ['email' => []],
+            'validate' => ['email' => ['The email must be a valid email address.']],
         ]);
     }
 
@@ -46,35 +46,38 @@ class LoginTest extends ApiTestCase
             'password' => '',
         ]);
         $response->assertStatus(422)->assertJson([
-            'validate' => ['password' => []],
+            'validate' => ['password' => ['The password field is required.']],
         ]);
     }
 
     /** @test */
     public function not_success_login_not_active_user()
     {
-        factory(User::class, 1)->create(['active' => 0, 'email' => 'test@div-art.com', 'password' => bcrypt('password')]);
-
+        $user = factory(User::class)->create(['active' => 0, 'deleted'=>0, 'email' => 'test@div-art.com', 'password' => 'password']);
         $response = $this->sendJson([
             'email' => 'test@div-art.com',
             'password' => 'password',
         ]);
         $response->assertStatus(400)->assertJson([
             'validate' => null,
+            'message' => 'Account is not active.'
         ]);
     }
 
     /** @test */
     public function not_success_login_deleted_user()
     {
-        factory(User::class, 1)->create(['deleted' => 1, 'email' => 'test@div-art.com', 'password' => bcrypt('password')]);
+        factory(User::class, 1)->create(['deleted' => 1, 'email' => 'test@div-art.com', 'password' => 'password']);
 
         $response = $this->sendJson([
             'email' => 'test@div-art.com',
             'password' => 'password',
         ]);
 
-        $response->assertStatus(400);
+        $response->assertStatus(400)->assertJson([
+            'validate' => null,
+            'message' => 'Email or Password is invalid.'
+        ]);
     }
 
     /** @test */
@@ -83,7 +86,7 @@ class LoginTest extends ApiTestCase
         $this->passportInstall();
         $this->fakeEvents();
 
-        $userData = ['active' => 1, 'email' => 'test@div-art.com', 'password' => bcrypt('password')];
+        $userData = ['active' => 1, 'email' => 'test@div-art.com', 'password' => 'password'];
 
         factory(User::class, 1)->create($userData);
 
@@ -91,8 +94,9 @@ class LoginTest extends ApiTestCase
             'email' => 'test@div-art.com',
             'password' => 'password',
         ]);
-        $response->assertStatus(200);
 
-        $this->assertDatabaseHas('users', $userData);
+        $response->assertStatus(200)->assertJson([
+            'message' => 'Login success.',
+        ])->assertJsonStructure(['data']);
     }
 }
