@@ -100,7 +100,7 @@ class AuthController extends Controller
     *     enum={"en", "uk", "ru"},
     *     type="string"
     *   ),
-    *   @SWG\Response(response=200, description="successful operation"),
+    *   @SWG\Response(response=201, description="successful operation"),
     *   @SWG\Response(response=422, description="validate error"),
     *   @SWG\Response(response=500, description="internal server error")
     * )
@@ -155,7 +155,7 @@ class AuthController extends Controller
     *     enum={"en", "uk", "ru"},
     *     type="string"
     *   ),
-    *   @SWG\Response(response=200, description="successful operation"),
+    *   @SWG\Response(response=201, description="successful operation"),
     *   @SWG\Response(response=422, description="validate error"),
     *   @SWG\Response(response=500, description="internal server error")
     * )
@@ -176,23 +176,49 @@ class AuthController extends Controller
         return response()->success([], 'User created. Email to activate account sended.', 201);
     }
 
-    public function activate(UserActivateRequest $request)
+    /**
+    * @SWG\Post(
+    *   path="/activate",
+    *   summary="Activate user",
+    *   tags={"Auth"},
+    *   @SWG\Parameter(
+    *     name="hash",
+    *     in="formData",
+    *     description="user's hash",
+    *     required=true,
+    *     type="string"
+    *   ),
+    *   @SWG\Parameter(
+    *     name="lang",
+    *     in="formData",
+    *     description="Language",
+    *     required=false,
+    *     enum={"en", "uk", "ru"},
+    *     type="string"
+    *   ),
+    *   @SWG\Response(response=200, description="successful operation"),
+    *   @SWG\Response(response=422, description="validate error"),
+    *   @SWG\Response(response=500, description="internal server error")
+    * )
+    *
+    */
+    public function activate(AuthActivateRequest $request)
     {
         $data = $request->only('hash');
         $user = User::whereRaw('MD5(CONCAT(id, created_at)) = "'. $data['hash'].'"')->first();
         if ( ! empty($user)) {
-            if ($user->status != User::STATUS_NEW) {
-                return response()->error("Account hasn't status 'new'", 405);
+            if ($user->active) {
+                return response()->error("Account hasn't status 'new'.", 405);
             }
             $user->status = User::STATUS_ACTIVE;
+            $user->active = true;
             $user->save();
-            $token = $user->createToken('access_token')->accessToken;
 
-            event(new UserActivateEvent($user));
+            event(new AuthActivateEvent($user));
 
-            return response()->success(compact('token', 'user'), 'Account activated', 200);
+            return response()->success([], 'Account activated.', 200);
         } else {
-            return response()->error('Invalid link', 400);
+            return response()->error('Invalid link.', 400);
         }
     }
 

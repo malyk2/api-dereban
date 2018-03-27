@@ -2,7 +2,7 @@
 
 namespace App\Listeners\Auth;
 
-use App\Events\User\Activate;
+use App\Events\Auth\Activate;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
