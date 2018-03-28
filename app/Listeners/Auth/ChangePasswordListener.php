@@ -2,7 +2,7 @@
 
 namespace App\Listeners\Auth;
 
-use App\Events\User\ChangePassword;
+use App\Events\Auth\ChangePassword;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 

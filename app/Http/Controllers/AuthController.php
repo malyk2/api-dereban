@@ -267,19 +267,63 @@ class AuthController extends Controller
         return response()->success([], 'Email for restore password sended.', 200);
     }
 
-    public function changePassword(UserChangePasswordRequest $request)
+    /**
+    * @SWG\Post(
+    *   path="/changePassword",
+    *   summary="Change password",
+    *   tags={"Auth"},
+    *   @SWG\Parameter(
+    *     name="password",
+    *     in="formData",
+    *     description="New user password",
+    *     required=true,
+    *     type="string"
+    *   ),
+    *   @SWG\Parameter(
+    *     name="password_confirmation",
+    *     in="formData",
+    *     description="Confirmation new user password",
+    *     required=true,
+    *     type="string"
+    *   ),
+    *   @SWG\Parameter(
+    *     name="hash",
+    *     in="formData",
+    *     description="User's hash for change password",
+    *     required=true,
+    *     type="string"
+    *   ),
+    *   @SWG\Parameter(
+    *     name="lang",
+    *     in="formData",
+    *     description="Language",
+    *     required=false,
+    *     enum={"en", "uk", "ru"},
+    *     type="string"
+    *   ),
+    *
+    *   @SWG\Response(response=200, description="successful operation"),
+    *   @SWG\Response(response=422, description="validate error"),
+    *   @SWG\Response(response=500, description="internal server error")
+    * )
+    *
+    */
+    public function changePassword(AuthChangePasswordRequest $request)
     {
         $data = $request->only('password', 'hash');
         $user = User::whereRaw('MD5(CONCAT(email, created_at)) = "'. $data['hash'].'"')->first();
         if ( ! empty($user)) {
-            $user->password = bcrypt($data['password']);
+            if ( ! $user->active) {
+                return response()->error("Account not active.", 405);
+            }
+            $user->password = $data['password'];
             $user->save();
 
-            event(new UserChangePasswordEvent($user));
+            event(new AuthChangePasswordEvent($user));
 
-            return response()->success(compact('user'), 'Password changed', 200);
+            return response()->success([], 'Password changed.', 200);
         } else {
-            return response()->error('Invalid link', 400);
+            return response()->error('Invalid link.', 400);
         }
     }
 }

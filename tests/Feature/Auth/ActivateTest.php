@@ -31,7 +31,7 @@ class ActivateTest extends ApiTestCase
         $response = $this->sendJson([
             'hash' => 'wrong hash',
         ]);
-        // dd($response->getData());
+
         $response->assertStatus(400)->assertJson([
             'validate' => null,
             'message' => 'Invalid link.'
@@ -61,7 +61,7 @@ class ActivateTest extends ApiTestCase
         $user = factory(User::class)->create(['email' => 'test@div-art.com', 'password' => 'password']);
 
         $response = $this->sendJson([
-            'hash' => $user->getactivateHash(),
+            'hash' => $user->getHashActivate(),
         ]);
         $response->assertStatus(200)->assertJson([
             'data' => [],
