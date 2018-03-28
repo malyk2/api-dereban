@@ -15,6 +15,25 @@ use App\Http\Resources\User\InviteInfo as UserInviteInfoResourse;
 
 class UserController extends Controller
 {
+    /**
+    * @SWG\Post(
+    *   path="/user/changeLang",
+    *   summary="Login",
+    *   tags={"User"},
+    *   security={
+    *     {"passport": {}},
+    *   },
+    *   @SWG\Parameter(
+    *     name="lang",
+    *     in="formData",
+    *     description="User language",
+    *     required=true,
+    *     type="string"
+    *   ),
+    *   @SWG\Response(response=200, description="Return user token ", @SWG\Schema(ref="#/definitions/UserToken"),),
+    * )
+    *
+    */
     public function changeLang(UserChangeLangRequest $request)
     {
         $data = $request->only('lang');
@@ -32,7 +51,7 @@ class UserController extends Controller
     * @SWG\Get(
     *   path="/user/getAuthUserInfo",
     *   summary="Get info about auth user",
-    *   tags={"users"},
+    *   tags={"User"},
     *   security={
     *     {"passport": {}},
     *   },
